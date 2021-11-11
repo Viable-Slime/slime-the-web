@@ -38,14 +38,36 @@
     <li><a href="#">Rename demo</a></li>
     <li><a href="/hax.html">HAX, card demo</a></li>
   </ul>
+
+
+
   <div class="wrapper">
-    <rename-me need="joy">Some inner text that will render out</rename-me>
+
+
+    <slime-sorting-question question="Sort The Following In Order">
+      <slime-sorting-option order="1">Option1</slime-sorting-option>
+      <slime-sorting-option order="3">Option2</slime-sorting-option>
+      <slime-sorting-option order="4">Option3</slime-sorting-option>
+      <slime-sorting-option order="2">Option4</slime-sorting-option>
+    </slime-sorting-question>
+
+    
+
+
     <word-count>
+
+
       <rename-me need="nothing"><div>You feel much shame.</div></rename-me>
+
+
+
+
     </word-count>
   </div>
   <script type="module">
-    import "./rename-me.js";
+    import "./src/SlimeSortingQuestion.js";
+    import "./src/SlimeSortingOption.js";
+
     import "@lrnwebcomponents/word-count/word-count.js";
   </script>
 </body>
