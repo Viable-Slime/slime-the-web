@@ -58,8 +58,14 @@ These are dedicated status check-ins as this is a multi-week project
 
 
 ### Check-in 2
-- 
-- 
+#### Progress
+- From this past week we have began to plan our approach the sorting element. We spent time in class discussing how we plan to grab the list items and allow reorganization of the list. We did find on Stack Overflow that we can use the "draggable" attribute on our list item, but we are still testing whether or not we will approach it this way.
+- We have split our element currently into a question element, and the various options that will be provided in the list. There are still a few changes that aren't pushed currently, but will be hopefully by tomorrow.
+- We have decided to each create our own branch in the repository so that we can all attempt tackling certain portions of the sorting element. Our plan is then to meet and talk about the code we wrote and determine what we will take from each person. We think that this approach is good for the project, but will determine if it is working successfully as we continue to develop. 
+#### Next Steps
+- Focus on grabbing list items 
+- Continue to work on sorting logic
+- Will we check the list order to the correct list order upon each move, or upon button click?
 ### Check-in 3
 - 
 - 
