@@ -15,7 +15,11 @@
       font-family: sans-serif;
     }
     .wrapper {
-      margin: 100px;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      width: 500px;
+      height: auto;
     }
     .menu {
       display: flex;
@@ -46,23 +50,12 @@
 
     <slime-sorting-question question="Sort The Following In Order">
       <slime-sorting-option order="1">Option1</slime-sorting-option>
-      <slime-sorting-option order="3">Option2</slime-sorting-option>
-      <slime-sorting-option order="4">Option3</slime-sorting-option>
-      <slime-sorting-option order="2">Option4</slime-sorting-option>
+      <slime-sorting-option order="3">Option3</slime-sorting-option>
+      <slime-sorting-option order="2">Option2</slime-sorting-option>
+      <slime-sorting-option order="4">Option4</slime-sorting-option>
     </slime-sorting-question>
 
     
-
-
-    <word-count>
-
-
-      <rename-me need="nothing"><div>You feel much shame.</div></rename-me>
-
-
-
-
-    </word-count>
   </div>
   <script type="module">
     import "./src/SlimeSortingQuestion.js";

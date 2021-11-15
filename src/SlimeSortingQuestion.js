@@ -14,15 +14,51 @@ export class SlimeSortingQuestion extends LitElement {
   // HTMLElement life-cycle, built in; use this for setting defaults
   constructor() {
     super();
-    this.need = 'all need to succeed';
+    this.question = "Sort the following in order!";
+    this.numberOfOptions = this.children.length;
+    this.numberCorrrect = 0;
+    this.correctOrder = [];
+    
+    //get correct order store it in an array, remove order attribute
+    for(var i = 0; i <= this.children.length; i++){
+      for(var j = 0; j < this.children.length; j++){
+        if(this.children[j].getAttribute("order")==(i)){
+          this.correctOrder.push(this.children[j]);
+          this.children[j].removeAttribute("order");
+        }
+      }
+    }
+
 
   }
+
+
+  checkOrder(){
+    var numCorrect = 0;
+    for(var i = 0; i < this.numberOfOptions; i++){  
+      if(this.children[i].isEqualNode(this.correctOrder[i])){
+        numCorrect+=1;
+        this.children[i].removeAttribute("incorrect");
+        this.children[i].setAttribute("correct",true);
+      }else{
+        this.children[i].removeAttribute("correct");
+        this.children[i].setAttribute("incorrect",true);
+      }
+      
+    }
+    this.numberCorrrect = numCorrect;
+  }
+
+
+
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
       question: { type: String, reflect: true },
-
+      correctOrder: {type: Array},
+      numberOfOptions: {type: Number},
+      numberCorrrect: {type: Number},
     };
   }
 
@@ -33,6 +69,7 @@ export class SlimeSortingQuestion extends LitElement {
       if (propName === 'need' && this[propName] === 'joy') {
         this.classList.add('joyful');
       }
+      
     });
   }
 
@@ -56,10 +93,18 @@ export class SlimeSortingQuestion extends LitElement {
     super.disconnectedCallback();
   }
 
+
+  buttonClick(){
+
+    alert("not yet implmented");
+  }
+
   // CSS - specific to Lit
   static get styles() {
     return css`
+
       :host {
+        background-color: var(--slime-sorting-question-background-color,white);
         border: 2px solid black;
         padding: 15px 10px;
         display: flex;
@@ -68,6 +113,9 @@ export class SlimeSortingQuestion extends LitElement {
         box-shadow: 2px 1px 2px -1px black;
         margin-top: 10px;
         margin-bottom: 10px;
+        font-weight: bold;
+        height: inherit;
+        width: inherit;
       }
 
 
@@ -78,25 +126,52 @@ export class SlimeSortingQuestion extends LitElement {
 
       }
 
-    
-      .options > {
+      
+      .options{
 
-        
-        
-        border: black 1px solid;
-        color:  red;
-        
+        margin-bottom: 10px;
+
       }
 
+
+      .slime-sorting-controls{
+
+        display: flex;
+        justify-content: space-between;
+        padding-right: 5%;
+        font-size: 20px;
+        font-family: revert;
+      }
+
+     
+      .submit-button{
+      border-radius: 5px;
+      border-width: 2px;
+      cursor: pointer;
+      background-color: inherit;
+      box-shadow: 1px 1px 1px 0px;
+      }
+
+      .submit-button:hover{
+        opacity: 0.8;
+      }
+
+      .submit-button:active{
+        cursor: default;
+      }
+      
 
     `;
   }
 
   // HTML - specific to Lit
   render() {
+
+    console.log("correct order:" + this.correctOrder);
     return html`
       <div class="slime-sorting-question-header">${this.question}</div>
-      <slot class="options"></slot>
+      <div class="options"><slot></slot></div>
+      <div class="slime-sorting-controls"><span>You have ${this.numberCorrrect}/${this.numberOfOptions} correct.</span><button class="submit-button" @click="${this.checkOrder}">Submit</button></div>
     `;
   }
 
