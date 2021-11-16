@@ -14,6 +14,8 @@ export class SlimeSortingQuestion extends LitElement {
   // HTMLElement life-cycle, built in; use this for setting defaults
   constructor() {
     super();
+    this.celebrate = false;
+    this.shame = false;
     this.question = "Sort the following in order!";
     this.numberOfOptions = this.children.length;
     this.numberCorrrect = 0;
@@ -28,6 +30,8 @@ export class SlimeSortingQuestion extends LitElement {
         }
       }
     }
+
+    
 
 
   }
@@ -47,6 +51,54 @@ export class SlimeSortingQuestion extends LitElement {
       
     }
     this.numberCorrrect = numCorrect;
+    if(this.celebrate){this.celebration(this.numberCorrrect,this.numberOfOptions);}
+    if(this.shame){this.celebration(this.numberCorrrect,this.numberOfOptions);}
+  }
+
+
+  celebration(score, maximumScore){
+    if(score==maximumScore){
+      //play audio & disable button until audio play is over
+      var audio = new Audio('src/mp3/Celebration1.mp3');
+      var duration;
+      var button = this.shadowRoot.querySelector(".submit-button");
+      //show confetti
+      var el = this;
+      el.style.backgroundImage = "url(src/gifs/confetti.gif)";
+      audio.play();
+      button.disabled = true;
+      audio.onloadeddata = function(){
+        duration = Number.parseInt(audio.duration);
+        console.log(duration);
+        setTimeout(()=>{
+        button.disabled = false;
+        el.style.backgroundImage = "none";
+        },(duration * 1000));
+      }
+    }  
+    else{
+      //else if shame = true play failure audio :)
+      if(this.shame){
+        console.log("here");
+        //play audio & disable button until audio play is over
+       var audio = new Audio('src/mp3/wrong.mp3');
+       var duration;
+       var button = this.shadowRoot.querySelector(".submit-button");
+       //show confetti
+       var el = this;
+       el.style.backgroundImage = "url(src/gifs/fire.gif)";
+       audio.play();
+       button.disabled = true;
+       audio.onloadeddata = function(){
+         duration = Number.parseInt(audio.duration);
+         console.log(duration);
+         setTimeout(()=>{
+         button.disabled = false;
+         el.style.backgroundImage = "none";
+         },(duration * 1000));
+       }
+      }
+    }
   }
 
 
@@ -59,6 +111,8 @@ export class SlimeSortingQuestion extends LitElement {
       correctOrder: {type: Array},
       numberOfOptions: {type: Number},
       numberCorrrect: {type: Number},
+      celebrate: {type: Boolean},
+      shame: {type: Boolean}
     };
   }
 
@@ -91,12 +145,6 @@ export class SlimeSortingQuestion extends LitElement {
   // this fires every time the element moves
   disconnectedCallback() {
     super.disconnectedCallback();
-  }
-
-
-  buttonClick(){
-
-    alert("not yet implmented");
   }
 
   // CSS - specific to Lit
@@ -166,8 +214,6 @@ export class SlimeSortingQuestion extends LitElement {
 
   // HTML - specific to Lit
   render() {
-
-    console.log("correct order:" + this.correctOrder);
     return html`
       <div class="slime-sorting-question-header">${this.question}</div>
       <div class="options"><slot></slot></div>

@@ -51,7 +51,6 @@ export class SlimeSortingOption extends LitElement {
         this.currentPosition = this.dragPosition;
         return;
       }
-    
     }
 
     //going down
@@ -89,9 +88,6 @@ export class SlimeSortingOption extends LitElement {
     this.option = 'option';
     this.currentPosition = 0;
     this.dragPosition = 0;
-    
-    
-
     this.setAttribute("draggable",true);
     this.addEventListener("mousedown",this.getCurrentPosition);
     this.addEventListener("drag",this.DragStart);
@@ -207,10 +203,6 @@ export class SlimeSortingOption extends LitElement {
       cursor: grabbing;
       
     }
-
-
-   
-
 
     `;
   }
