@@ -13,10 +13,12 @@
       margin: 0;
       padding: 50px;
       font-family: sans-serif;
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
     }
     .wrapper {
       margin: auto;
-      display: flex;
       justify-content: center;
       width: 500px;
       height: auto;
@@ -46,14 +48,26 @@
 
 
   <div class="wrapper">
-
-
     <slime-sorting-question celebrate shame question="Sort The Following In Order">
       <slime-sorting-option order="1">You woke up this morning.</slime-sorting-option>
       <slime-sorting-option order="3">You went to class.</slime-sorting-option>
       <slime-sorting-option order="2">You brushed your teeth.</slime-sorting-option>
       <slime-sorting-option order="4">You go to bed.</slime-sorting-option>
     </slime-sorting-question>
+
+
+    <div class="wrapper">
+      <slime-sorting-question dark celebrate shame question="Sort The Following In Order">
+        <slime-sorting-option order="1">Jhonny went to the store.</slime-sorting-option>
+        <slime-sorting-option order="4">Johnny called the police.</slime-sorting-option>
+        <slime-sorting-option order="2">A robber broke in.</slime-sorting-option>
+        <slime-sorting-option order="5">Johnny went to jail.</slime-sorting-option>
+        <slime-sorting-option order="8">Johnny lived happily ever after.</slime-sorting-option>
+        <slime-sorting-option order="3">Jhonny punched the robber.</slime-sorting-option>
+        <slime-sorting-option order="6">Jhonny got huge in jail.</slime-sorting-option>
+        <slime-sorting-option order="7">Johnny beat up a prison guard.</slime-sorting-option>
+
+      </slime-sorting-question>
 
     
   </div>

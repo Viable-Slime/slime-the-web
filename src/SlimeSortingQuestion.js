@@ -69,7 +69,6 @@ export class SlimeSortingQuestion extends LitElement {
       button.disabled = true;
       audio.onloadeddata = function(){
         duration = Number.parseInt(audio.duration);
-        console.log(duration);
         setTimeout(()=>{
         button.disabled = false;
         el.style.backgroundImage = "none";
@@ -79,7 +78,6 @@ export class SlimeSortingQuestion extends LitElement {
     else{
       //else if shame = true play failure audio :)
       if(this.shame){
-        console.log("here");
         //play audio & disable button until audio play is over
        var audio = new Audio('src/mp3/wrong.mp3');
        var duration;
@@ -91,7 +89,6 @@ export class SlimeSortingQuestion extends LitElement {
        button.disabled = true;
        audio.onloadeddata = function(){
          duration = Number.parseInt(audio.duration);
-         console.log(duration);
          setTimeout(()=>{
          button.disabled = false;
          el.style.backgroundImage = "none";
@@ -167,7 +164,18 @@ export class SlimeSortingQuestion extends LitElement {
       }
 
 
+      :host([dark]){
+        background-color: var(--slime-sorting-question-background-color,#161515ba);       
+        color: white;
+        
+      }
+
+      :host([dark]) .slime-sorting-controls button{
+        color: white;
+      }
+
       .slime-sorting-question-header{
+        text-align: center;
         font-size: 20px;
         font-family: revert;
         margin-bottom: 10px;
@@ -198,6 +206,12 @@ export class SlimeSortingQuestion extends LitElement {
       cursor: pointer;
       background-color: inherit;
       box-shadow: 1px 1px 1px 0px;
+      font-weight: bold;
+      }
+
+      :host([dark]) .submit-button{
+        border-color: lightgray;
+        box-shadow: 1px 1px 1px 0px #867b7b;
       }
 
       .submit-button:hover{

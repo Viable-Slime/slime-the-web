@@ -11,8 +11,37 @@ export class SlimeSortingOption extends LitElement {
     return 'slime-sorting-option';
   }
 
+  // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
+  static get properties() {
+    return {
+      order: { type: Number, reflect: false },
+      dragPosition: {type: Number},
+      currentPosition: {type: Number},
+      dark: {type: Boolean}
+
+    };
+  }
+
+  // HTMLElement life-cycle, built in; use this for setting defaults
+  constructor() {
+    super(); 
+    this.option = 'option';
+    this.currentPosition = 0;
+    this.dragPosition = 0;
+    this.setAttribute("draggable",true);
+    this.addEventListener("mousedown",this.getCurrentPosition);
+    this.addEventListener("drag",this.DragStart);
+    this.addEventListener("dragend",this.DragEnd);
+    this.addEventListener("mouseup",this.DragEnd);
+    
+  }
+  
   getCurrentPosition(){
-    this.style.setProperty("--option-background-color","darkgray");
+    if(this.dark){
+      this.style.backgroundColor = "#b7e8f591";
+    }else{
+      this.style.backgroundColor = "darkgray";
+    }
     this.removeAttribute("correct");
     this.removeAttribute("incorrect");
     var mouseTracker = window.event;
@@ -21,21 +50,15 @@ export class SlimeSortingOption extends LitElement {
   }
 
   DragStart(){
-
     //distance above or below current pos to switch index
     var changeBuffer = 30;
-
    // this.style.visibility = "hidden";
     var mouseTracker = window.event;
-    
     var posY = mouseTracker.clientY;
     //drag stop counts as drag for some reason so make sure not to set drag pos to zero
-    if(posY!=0){
-      this.dragPosition = posY;
-    }
+    if(posY!=0){this.dragPosition = posY;}
     var element = this;
     var parent = this.parentNode;
-
     //going up
     if( (this.dragPosition + changeBuffer) < this.currentPosition){
       //find old index
@@ -52,7 +75,6 @@ export class SlimeSortingOption extends LitElement {
         return;
       }
     }
-
     //going down
     if( (this.dragPosition - changeBuffer) > this.currentPosition){
       //find old index
@@ -68,56 +90,27 @@ export class SlimeSortingOption extends LitElement {
         this.currentPosition = this.dragPosition;
         return;
       }
-     
     }
-
   }
-
 
    DragEnd(){
-   
-    this.style.visibility = "visible";
-    this.style.setProperty("--option-background-color","inital");
+    if(this.dark){
+      this.style.backgroundColor = "lightgray";
+    }else{
+      this.style.backgroundColor = "white";
+    }
   }
 
 
-  // HTMLElement life-cycle, built in; use this for setting defaults
-  constructor() {
-    super();
-    
-    this.option = 'option';
-    this.currentPosition = 0;
-    this.dragPosition = 0;
-    this.setAttribute("draggable",true);
-    this.addEventListener("mousedown",this.getCurrentPosition);
-    this.addEventListener("drag",this.DragStart);
-    this.addEventListener("dragend",this.DragEnd);
-    this.addEventListener("mouseup",this.DragEnd);
-    
-  }
 
-  // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
-  static get properties() {
-    return {
-      order: { type: Number, reflect: false },
-      dragPosition: {type: Number},
-      currentPosition: {type: Number}
-
-    };
-  }
+  
 
   // updated fires every time a property defined above changes
   // this allows you to react to variables changing and use javascript to perform logic
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
-     
-      
-      if (propName === 'dragPosition') {
-        //console.log("updated:" + this.dragPosition);
+      if (propName === 'dragPosition') { 
       }
-
-
-      
     });
   }
 
@@ -129,13 +122,12 @@ export class SlimeSortingOption extends LitElement {
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
-     
+      
+      if(this.parentElement.getAttribute("dark")!= (null || undefined) ){
+        this.setAttribute("dark",true);
+      }
     }
   }
-
-
-
-
 
   // HTMLElement life-cycle, element has been connected to the page / added or moved
   // this fires EVERY time the element is moved
@@ -156,6 +148,8 @@ export class SlimeSortingOption extends LitElement {
   static get styles() {
     return css`
 
+    
+
     :host {
       border: 2px black solid;
       border-radius: 5px;
@@ -172,16 +166,25 @@ export class SlimeSortingOption extends LitElement {
       
     }
 
+    :host([dark]){
+
+      background-color: var(--option-background-color,lightgray);
+      border-color: #a8a8a8;
+      box-shadow: 1px 1px 1px #aaa7a7;
+      color: white;
+    }
+
     :host([correct]){
       transition: background-color 0.7s linear;
-      background-color: var(--option-background-color-correct,#3deb3d87);
+      background-color: var(--option-background-color-correct,#3deb3d87) !important;
     }
 
     :host([incorrect]){
       transition: background-color 0.7s linear;
-      background-color: var(--option-background-color-incorrect,red);
+      background-color: var(--option-background-color-incorrect,#f94343ad) !important;
     }
 
+  
     .option-slot-wrapper{
       display: block;
       z-index: 2;
@@ -190,18 +193,18 @@ export class SlimeSortingOption extends LitElement {
       background-color: inherit;
       border: none;
       text-align: inherit;
-  
-
+      font-weight: bold;
     }
-
     :host button{
       cursor: grab;
+      font-weight: bold;
+    }
+    :host button:active {
+      cursor: grabbing;
     }
 
-    :host button:active {
-
-      cursor: grabbing;
-      
+    :host(dark) ::slotted(*){
+      color: white;
     }
 
     `;
