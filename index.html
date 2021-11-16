@@ -15,7 +15,11 @@
       font-family: sans-serif;
     }
     .wrapper {
-      margin: 100px;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      width: 500px;
+      height: auto;
     }
     .menu {
       display: flex;
@@ -38,14 +42,25 @@
     <li><a href="#">Rename demo</a></li>
     <li><a href="/hax.html">HAX, card demo</a></li>
   </ul>
+
+
+
   <div class="wrapper">
-    <rename-me need="joy">Some inner text that will render out</rename-me>
-    <word-count>
-      <rename-me need="nothing"><div>You feel much shame.</div></rename-me>
-    </word-count>
+
+
+    <slime-sorting-question celebrate shame question="Sort The Following In Order">
+      <slime-sorting-option order="1">You woke up this morning.</slime-sorting-option>
+      <slime-sorting-option order="3">You went to class.</slime-sorting-option>
+      <slime-sorting-option order="2">You brushed your teeth.</slime-sorting-option>
+      <slime-sorting-option order="4">You go to bed.</slime-sorting-option>
+    </slime-sorting-question>
+
+    
   </div>
   <script type="module">
-    import "./rename-me.js";
+    import "./src/SlimeSortingQuestion.js";
+    //import "./src/SlimeSortingOption.js";
+
     import "@lrnwebcomponents/word-count/word-count.js";
   </script>
 </body>
