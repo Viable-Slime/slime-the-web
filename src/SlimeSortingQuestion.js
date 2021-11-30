@@ -20,6 +20,11 @@ export class SlimeSortingQuestion extends LitElement {
     this.numberOfOptions = this.children.length;
     this.numberCorrrect = 0;
     this.correctOrder = [];
+
+
+
+    //set order to be orginal order then scramble the options
+
     
     //get correct order store it in an array, remove order attribute
     for(var i = 0; i <= this.children.length; i++){
