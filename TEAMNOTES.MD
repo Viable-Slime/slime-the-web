@@ -67,8 +67,9 @@ These are dedicated status check-ins as this is a multi-week project
 - Continue to work on sorting logic
 - Will we check the list order to the correct list order upon each move, or upon button click?
 ### Check-in 3
-- 
-- 
+- From the last check point - we've been regrouping and identifying the focus and action points that we need to take as a group with the project. With the help of Bryan, we have identified some areas that will need to be addressed to optimize our application. Some highlighted focus points that we have identified as a team that are going to be a priority for us to tacke are the implementation of further language capabilities as well as building upon the accessibility of our application. Currently up to this point, we've been working on being able to randomize the options, as well as adding in further buttons to do the sorting as well.
+- ![codeSnip](https://user-images.githubusercontent.com/90001492/144116399-489210b5-9507-4e51-a9d6-691c758060db.png)
+- Comments: Here is some of the highlighted progress where the plan is for it to be working on randomizing options - > after the correct order of everything is obtained.
 ### Check-in 4
 - 
 - 
