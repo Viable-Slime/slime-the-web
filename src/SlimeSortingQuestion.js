@@ -24,22 +24,43 @@ export class SlimeSortingQuestion extends LitElement {
 
 
     //set order to be orginal order then scramble the options
-
     
-    //get correct order store it in an array, remove order attribute
-    for(var i = 0; i <= this.children.length; i++){
-      for(var j = 0; j < this.children.length; j++){
-        if(this.children[j].getAttribute("order")==(i)){
-          this.correctOrder.push(this.children[j]);
-          this.children[j].removeAttribute("order");
-        }
-      }
-    }
-
+    this.getCorrectOrder();
+    setTimeout(this.randomizeOptions(),100);
     
-
-
   }
+
+  getCorrectOrder(){
+    let el = this;
+    this.childNodes.forEach(function(child){
+      if(child.tagName=="SLIME-SORTING-OPTION"){
+        el.correctOrder.push(child);
+      }
+    });
+  }
+
+
+  randomizeOptions(){
+    //loop through number of options and randomize their indexes
+    let indexValues = [];
+    for(var i = 0; i < this.numberOfOptions; i++){indexValues.push(i);}
+
+    for(var i = 0; i < this.numberOfOptions; i++){
+
+      var randomIndex1 = Math.floor(Math.random() * (this.numberOfOptions - 0) + 0);
+      if(randomIndex1===undefined){randomIndex1 = 0;}
+
+      let targetChild = this.children[(indexValues[randomIndex1])];
+
+      var randomIndex2 = Math.floor(Math.random() * (indexValues.length - 0) + 0);
+      if(randomIndex2===undefined){randomIndex2 = 0;}
+
+      this.insertBefore(targetChild, this.children[(indexValues[randomIndex2])]);
+
+    }
+  }
+
+
 
 
   checkOrder(){
@@ -134,6 +155,7 @@ export class SlimeSortingQuestion extends LitElement {
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
+      
     }
   }
 
