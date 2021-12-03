@@ -20,8 +20,7 @@ export class SlimeSortingQuestion extends LitElement {
     this.numberOfOptions = this.children.length;
     this.numberCorrrect = 0;
     this.correctOrder = [];
-
-
+    this.dark = false;
 
     //set order to be orginal order then scramble the options
     
@@ -70,9 +69,18 @@ export class SlimeSortingQuestion extends LitElement {
         numCorrect+=1;
         this.children[i].removeAttribute("incorrect");
         this.children[i].setAttribute("correct",true);
+
+        //add correct icon
+        this.children[i].shadowRoot.querySelector("#correct-icon").style.display = "flex";
+        this.children[i].shadowRoot.querySelector("#incorrect-icon").style.display = "none";
       }else{
         this.children[i].removeAttribute("correct");
         this.children[i].setAttribute("incorrect",true);
+
+        //add incorrect icon
+        this.children[i].shadowRoot.querySelector("#incorrect-icon").style.display = "flex";
+        this.children[i].shadowRoot.querySelector("#correct-icon").style.display = "none";
+
       }
       
     }
@@ -126,6 +134,34 @@ export class SlimeSortingQuestion extends LitElement {
 
 
 
+  reset(){
+
+    //spin animation
+
+
+    let resetButton = this.shadowRoot.querySelector(".reset-button").firstChild;
+    resetButton.animate([{transform : "rotate(360deg)"}],{duration: 500});
+
+    //reset appearance of all options
+  
+    this.childNodes.forEach(function(child){
+
+      if(child.tagName=="SLIME-SORTING-OPTION"){
+        child.shadowRoot.querySelector("#incorrect-icon").style.display = "none";
+        child.shadowRoot.querySelector("#correct-icon").style.display = "none";
+        child.removeAttribute("incorrect");
+        child.removeAttribute("correct");
+      }
+    });
+
+
+    this.numberCorrrect = 0;
+    this.randomizeOptions();
+  
+  }
+
+
+
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
@@ -135,7 +171,8 @@ export class SlimeSortingQuestion extends LitElement {
       numberOfOptions: {type: Number},
       numberCorrrect: {type: Number},
       celebrate: {type: Boolean},
-      shame: {type: Boolean}
+      shame: {type: Boolean},
+      dark: {type: Boolean}
     };
   }
 
@@ -155,7 +192,7 @@ export class SlimeSortingQuestion extends LitElement {
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
-      
+     
     }
   }
 
@@ -248,17 +285,53 @@ export class SlimeSortingQuestion extends LitElement {
       .submit-button:active{
         cursor: default;
       }
+
+      .button-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+      }
       
+      .reset-button{
+        height: 20px;
+        width: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 5px;
+        border-radius: 5px;
+        padding: 9px;
+        background-color: inherit;
+        box-shadow: 1px 1px 1px 0px;
+        cursor: pointer;
+      }
+
+      .reset-button img{
+        height: inherit;
+        width: inherit;
+        padding: 1px;
+      }
 
     `;
   }
+
+  //To Do: add reset option this resets the option color, the score, and randomizes the options
 
   // HTML - specific to Lit
   render() {
     return html`
       <div class="slime-sorting-question-header">${this.question}</div>
       <div class="options"><slot></slot></div>
-      <div class="slime-sorting-controls"><span>You have ${this.numberCorrrect}/${this.numberOfOptions} correct.</span><button class="submit-button" @click="${this.checkOrder}">Submit</button></div>
+      <div class="slime-sorting-controls">
+      <span>You have ${this.numberCorrrect}/${this.numberOfOptions} correct.</span>
+      <div class="button-container">
+      ${this.dark ? html`<button @click="${this.reset}" class="reset-button"><img src="./src/images/resetDark.png" alt="reset button, click to restart"></img></button>`:
+       html`<button  @click="${this.reset}" class="reset-button"><img src="./src/images/reset.png" alt="reset button, click to restart"></img></button>`}
+      <button class="submit-button" @click="${this.checkOrder}">Submit</button>
+      </div>
+
+      </div>
     `;
   }
 

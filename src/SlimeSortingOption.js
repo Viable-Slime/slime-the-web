@@ -14,9 +14,6 @@ export class SlimeSortingOption extends LitElement {
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
-      order: { type: Number, reflect: false },
-      dragPosition: {type: Number},
-      currentPosition: {type: Number},
       dark: {type: Boolean}
 
     };
@@ -26,14 +23,11 @@ export class SlimeSortingOption extends LitElement {
   constructor() {
     super(); 
     this.option = 'option';
-    this.currentPosition = 0;
-    this.dragPosition = 0;
     this.setAttribute("draggable",true);
     this.addEventListener("mousedown",this.getCurrentPosition);
     this.addEventListener("drag",this.DragStart);
     this.addEventListener("dragend",this.DragEnd);
     this.addEventListener("mouseup",this.DragEnd);
-    
   }
   
   getCurrentPosition(){
@@ -102,6 +96,50 @@ export class SlimeSortingOption extends LitElement {
   }
 
 
+  //To Do: change color of up arrowed otption to see which one moved better
+    // then reset the color of all other options 
+
+
+  upArrowSort(element){
+
+    var parent = element.parentNode;
+
+     //find old index
+     var oldIndex;
+     for(var i = 0; i < parent.children.length; i++){
+       if(parent.children[i].isEqualNode(element)){
+         oldIndex = i;        
+         }
+     }
+     //set new index
+     if(oldIndex!=0){
+       parent.insertBefore(element,parent.children[(oldIndex-1)]);
+       return;
+     }
+
+
+  }
+
+
+
+  downArrowSort(element){
+
+    var parent = element.parentNode;
+
+     //find old index
+     var oldIndex;
+     for(var i = 0; i < parent.children.length; i++){
+       if(parent.children[i].isEqualNode(element)){
+         oldIndex = i;
+         }
+     }
+     //set new index
+     if(oldIndex!=parent.children.length -1){
+       parent.insertBefore(parent.children[(oldIndex+1)],element);
+       return;
+     }
+
+  }
 
   
 
@@ -126,6 +164,31 @@ export class SlimeSortingOption extends LitElement {
       if(this.parentElement.getAttribute("dark")!= (null || undefined) ){
         this.setAttribute("dark",true);
       }
+
+      var el = this;
+
+      this.shadowRoot.querySelector('#upArrow').addEventListener('click',function(){
+            el.upArrowSort(el);  
+      });
+      //add same event listener for enter key
+      this.shadowRoot.querySelector('#upArrow').addEventListener('keypress',function(e){
+        if(e.key==="Enter"){
+          el.upArrowSort(el);  
+          }
+        
+      });
+      this.shadowRoot.querySelector('#downArrow').addEventListener('click',function(){
+            el.downArrowSort(el);  
+      });
+      //add same event listener for enter key
+      this.shadowRoot.querySelector('#downArrow').addEventListener('keypress',function(e){
+        if(e.key==="Enter"){
+          el.downArrowSort(el);  
+          }
+        
+      });
+
+
     }
   }
 
@@ -163,6 +226,8 @@ export class SlimeSortingOption extends LitElement {
       cursor: grab;
       z-index: 1;
       background-color: var(--option-background-color,white);
+      overflow: hidden;
+
       
     }
 
@@ -186,7 +251,8 @@ export class SlimeSortingOption extends LitElement {
 
   
     .option-slot-wrapper{
-      display: block;
+      display: flex;
+      align-items: center;
       z-index: 2;
       width: 100%;
       height: 100%;
@@ -207,6 +273,69 @@ export class SlimeSortingOption extends LitElement {
       color: white;
     }
 
+    .arrow-container{
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 5px;
+      position: relative;
+      right: 0px;
+      width: 20%;
+      height: 100%;
+      background-color: inherit;
+      align-items: center;
+    }
+
+    .arrow{
+      height: 15px;
+      width: 15px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: black;
+      cursor: pointer;
+      margin-left: 1px;
+      margin-right: 1px;
+      border-radius: 5px;
+      box-shadow: 0px 1px 1px 0px;
+    }
+    
+    .up-arrow{
+      transform: rotate(270deg);
+    }
+    
+    .down-arrow{
+      transform: rotate(90deg);
+    }
+
+
+    .feedback-container{
+      width: fit-content;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      padding-left: 5px;
+      background-color: inherit;
+    }
+
+    
+    
+    #correct-icon{
+      display: none;
+      height: 15px;
+      width: 15px;
+      border-radius: 2px;
+      box-shadow: 0px 1px 1px 0px;
+    }
+
+    #incorrect-icon{
+      display: none;
+      height: 15px;
+      width: 15px;
+      border-radius: 2px;
+      box-shadow: 0px 1px 1px 0px;
+    }
+
+
+
     `;
   }
 
@@ -217,7 +346,15 @@ export class SlimeSortingOption extends LitElement {
   // HTML - specific to Lit
   render() {
     return html`
-    <button class="option-slot-wrapper"><slot></slot></button>
+    <div class="feedback-container">
+    <img id="correct-icon" src="./src/images/correctIcon.png" alt="correct answer" label="correct"></img>
+    <img id="incorrect-icon" src="./src/images/incorrectIcon.png" alt="incorrect answer" label="incorrect"></img>
+    </div>
+    <button tabindex="-1" class="option-slot-wrapper"><slot></slot></button>
+    <div class="arrow-container">
+    <img tabindex="1" id="upArrow" class="arrow up-arrow" src="./src/images/arrow.png" alt="up arrow click me to move the option up"></img>
+    <img tabindex="2" id="downArrow" class="arrow down-arrow" src="./src/images/arrow.png" alt="down arrow click me to move the option down"></img>
+    </div>
     `;
   }
 
