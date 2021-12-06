@@ -71,9 +71,9 @@ These are dedicated status check-ins as this is a multi-week project
 - ![codeSnip](https://user-images.githubusercontent.com/90001492/144116399-489210b5-9507-4e51-a9d6-691c758060db.png)
 - Comments: Here is some of the highlighted progress where the plan is for it to be working on randomizing options - > after the correct order of everything is obtained.
 ### Check-in 4
-####Progress
+#### Progress
 - After reviewing the requirements for the sorting element, we realized we had to incorporate the up/down arrow sorting functionality into our element, so that feature was added. There was also a reset button added so that the user can reset after they complete sorting the list items. Randomization was also altered to give more potential options for the user to solve upon reset. 
-####Next Steps
+#### Next Steps
 - We have to enable translation across our element
 - Review further recommendations from professor notes and classmates.
 - Look into extra credit option with haxHooks
