@@ -135,17 +135,11 @@ export class SlimeSortingQuestion extends LitElement {
 
 
   reset(){
-
     //spin animation
-
-
     let resetButton = this.shadowRoot.querySelector(".reset-button").firstChild;
     resetButton.animate([{transform : "rotate(360deg)"}],{duration: 500});
-
     //reset appearance of all options
-  
     this.childNodes.forEach(function(child){
-
       if(child.tagName=="SLIME-SORTING-OPTION"){
         child.shadowRoot.querySelector("#incorrect-icon").style.display = "none";
         child.shadowRoot.querySelector("#correct-icon").style.display = "none";
@@ -153,11 +147,8 @@ export class SlimeSortingQuestion extends LitElement {
         child.removeAttribute("correct");
       }
     });
-
-
     this.numberCorrrect = 0;
     this.randomizeOptions();
-  
   }
 
 
