@@ -397,7 +397,6 @@ export class SlimeSortingQuestion extends LitElement {
        html`<button  @click="${this.reset}" class="reset-button"><img src="./src/images/reset.png" alt="reset button, click to restart"></img></button>`}
       <button class="submit-button" @click="${this.checkOrder}">Submit</button>
       </div>
-
       </div>
     `;
   }

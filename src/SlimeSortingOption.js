@@ -56,6 +56,14 @@ export class SlimeSortingOption extends LitElement {
 
       //distance above or below current pos to switch index
     var changeBuffer = 30;
+      
+
+    //if slottted images increase change buffer size
+    if(this.querySelectorAll('img').length > 0){
+      changeBuffer = 70;
+    }
+
+
     // this.style.visibility = "hidden";
      var mouseTracker = window.event;
      var posY = mouseTracker.clientY;
@@ -219,10 +227,9 @@ export class SlimeSortingOption extends LitElement {
         if(e.key==="Enter"){
           el.downArrowSort(el);  
           }
-        
       });
 
-
+      console.log(this.querySelectorAll('img').length);
     }
   }
 
@@ -253,7 +260,8 @@ export class SlimeSortingOption extends LitElement {
       width: 95%;
       margin-top: 5px;
       margin-bottom: 5px;
-      height: 25px;
+      height: 100%;
+      min-height: 25px;
       display: flex;
       align-items: center;
       box-shadow: 1px 1px 1px;
@@ -275,13 +283,15 @@ export class SlimeSortingOption extends LitElement {
 
     :host([correct]){
       transition: background-color 0.7s linear;
-      background-color: var(--option-background-color-correct,#3deb3d87) !important;
+      background-color: var(--option-background-color-correct,#3deb3dcc) !important;
     }
 
     :host([incorrect]){
       transition: background-color 0.7s linear;
-      background-color: var(--option-background-color-incorrect,#f94343ad) !important;
+      background-color: var(--option-background-color-incorrect,#f94343f7) !important;
     }
+
+    
 
   
     .option-slot-wrapper{
@@ -290,7 +300,7 @@ export class SlimeSortingOption extends LitElement {
       z-index: 2;
       width: 100%;
       height: 100%;
-      background-color: inherit;
+      background-color: transparent;
       border: none;
       text-align: inherit;
       font-weight: bold;
@@ -307,6 +317,16 @@ export class SlimeSortingOption extends LitElement {
       color: white;
     }
 
+
+    ::slotted(*){
+     
+     max-height: 75px;
+      
+    }
+
+   
+
+
     .arrow-container{
       display: flex;
       justify-content: flex-end;
@@ -315,7 +335,7 @@ export class SlimeSortingOption extends LitElement {
       right: 0px;
       width: 20%;
       height: 100%;
-      background-color: inherit;
+      background-color: transparent;
       align-items: center;
     }
 
@@ -351,7 +371,7 @@ export class SlimeSortingOption extends LitElement {
       height: 100%;
       align-items: center;
       padding-left: 5px;
-      background-color: inherit;
+      background-color: transparent;
     }
 
     
@@ -382,16 +402,25 @@ export class SlimeSortingOption extends LitElement {
 
   // HTML - specific to Lit
   render() {
+
+    
+
+    
+
     return html`
+
     <div class="feedback-container">
     <img id="correct-icon" src="./src/images/correctIcon.png" alt="correct answer" label="correct"></img>
     <img id="incorrect-icon" src="./src/images/incorrectIcon.png" alt="incorrect answer" label="incorrect"></img>
     </div>
+
     <button tabindex="-1" class="option-slot-wrapper"><slot></slot></button>
+
     <div class="arrow-container">
     <img tabindex="1" id="upArrow" class="arrow up-arrow" src="./src/images/arrow.png" alt="up arrow click me to move the option up"></img>
     <img tabindex="2" id="downArrow" class="arrow down-arrow" src="./src/images/arrow.png" alt="down arrow click me to move the option down"></img>
     </div>
+
     `;
   }
 
