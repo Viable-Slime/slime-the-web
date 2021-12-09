@@ -11,16 +11,18 @@
     html,
     body {
       margin: 0;
-      padding: 50px;
+      padding: 15px;
       font-family: sans-serif;
       display: flex;
       justify-content: space-evenly;
       flex-direction: column;
+      overflow: scroll;
     }
     .wrapper {
       margin: auto;
       justify-content: center;
-      width: 500px;
+      width: 100%;
+      max-width: 500px;
       height: auto;
     }
     .menu {
@@ -35,6 +37,12 @@
     .joyful {
       font-size: 2em;
     }
+
+    .middle{
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
   </style>
   <title>Project 3: HAXTheWeb</title>
 </head>
@@ -49,25 +57,46 @@
 
   <div class="wrapper">
 
-    <slime-sorting-question celebrate shame question="Sort The Following In Order 1">
-      <slime-sorting-option>You woke up this morning.</slime-sorting-option>
-      <slime-sorting-option>You brushed your teeth.</slime-sorting-option>
-      <slime-sorting-option>You went to class.</slime-sorting-option>
-      <slime-sorting-option>You go to bed.</slime-sorting-option>
-    </slime-sorting-question>
+    <sorting-question celebrate shame question="Sort The Following In Order">
+      <sorting-option>You woke up this morning.</sorting-option>
+      <sorting-option>You brushed your teeth.</sorting-option>
+      <sorting-option>You went to class.</sorting-option>
+      <sorting-option>You go to bed.</sorting-option>
+    </sorting-question>
 
+
+
+    <sorting-question class="middle" disabled celebrate shame question="Sort The Following In Order">
+      <sorting-option>This</sorting-option>
+      <sorting-option>Is</sorting-option>
+      <sorting-option>Disabled</sorting-option>
+    </sorting-question>
+
+
+
+    <sorting-question class="middle" dark disabled celebrate shame question="Sort The Following In Order">
+      <sorting-option>This</sorting-option>
+      <sorting-option>Is</sorting-option>
+      <sorting-option>Disabled</sorting-option>
+    </sorting-question>
+
+
+    <sorting-question class="middle" celebrate shame question="Sort The Following In Order">
+      <sorting-option> <img src="https://cdn.britannica.com/03/114903-050-502CFE8D/Cutaway-drawing-cell.jpg" alt="cells"> </sorting-option>
+      <sorting-option> <img src="https://static01.nyt.com/images/2019/05/21/science/15SCI-GENOME2/15SCI-GENOME2-jumbo.jpg" alt=""> </sorting-option>
+      <sorting-option><img src="https://www.visiblebody.com/hs-fs/hub/189659/file-2122072719-jpg/Learn_Articles/Skeleton_System/Set_1_Bone_Types/1-Five-Types-Of-Bones-1232W.jpg" alt="bones"> </sorting-option>
+      <sorting-option> <img src="https://th-thumbnailer.cdn-si-edu.com/rDqS7CQVfpWAjgPXuiKR34oc4Rg=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/a5/a5/a5a5cfff-a4e7-454f-bae2-cfc6c1fed66a/19991130_jab_cs9_163.jpg" alt=""> </sorting-option>
+    </sorting-question>
 
     
-      <slime-sorting-question dark celebrate shame question="Sort The Following">
-        <slime-sorting-option order="1">Jhonny went to the store.</slime-sorting-option>
-        <slime-sorting-option order="4">Johnny called the police.</slime-sorting-option>
-        <slime-sorting-option order="2">A robber broke in.</slime-sorting-option>
-        <slime-sorting-option order="5">Johnny went to jail.</slime-sorting-option>
-        <slime-sorting-option order="8">Johnny lived happily ever after.</slime-sorting-option>
-        <slime-sorting-option order="3">Jhonny punched the robber.</slime-sorting-option>
-        <slime-sorting-option order="6">Jhonny got huge in jail.</slime-sorting-option>
-        <slime-sorting-option order="7">Johnny beat up a prison guard.</slime-sorting-option>
-      </slime-sorting-question> 
+      <sorting-question  dark celebrate shame question="Sort The Following in Order (DARK THEME)">
+        <sorting-option>1</sorting-option>
+        <sorting-option>2</sorting-option>
+        <sorting-option>3</sorting-option>
+        <sorting-option>4</sorting-option>
+        <sorting-option>5</sorting-option>
+        <sorting-option>6</sorting-option>
+      </sorting-question> 
 
   </div>
 

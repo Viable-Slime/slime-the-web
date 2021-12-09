@@ -8,13 +8,14 @@ import { LitElement, html, css } from 'lit';
 export class SlimeSortingOption extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'slime-sorting-option';
+    return 'sorting-option';
   }
 
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
-      dark: {type: Boolean}
+      dark: {type: Boolean},
+      disabled: {type: Boolean}
 
     };
   }
@@ -31,68 +32,93 @@ export class SlimeSortingOption extends LitElement {
   }
   
   getCurrentPosition(){
-    if(this.dark){
-      this.style.backgroundColor = "#b7e8f591";
-    }else{
-      this.style.backgroundColor = "darkgray";
+    if(!this.disabled){
+
+      if(this.dark){
+        this.style.backgroundColor = "#b7e8f591";
+      }else{
+        this.style.backgroundColor = "darkgray";
+      }
+      this.removeAttribute("correct");
+      this.removeAttribute("incorrect");
+      var mouseTracker = window.event;
+      var posY = mouseTracker.clientY;
+      this.currentPosition = posY;
+
     }
-    this.removeAttribute("correct");
-    this.removeAttribute("incorrect");
-    var mouseTracker = window.event;
-    var posY = mouseTracker.clientY;
-    this.currentPosition = posY;
+   
   }
 
   DragStart(){
-    //distance above or below current pos to switch index
+
+
+    if(!this.disabled){
+
+      //distance above or below current pos to switch index
     var changeBuffer = 30;
-   // this.style.visibility = "hidden";
-    var mouseTracker = window.event;
-    var posY = mouseTracker.clientY;
-    //drag stop counts as drag for some reason so make sure not to set drag pos to zero
-    if(posY!=0){this.dragPosition = posY;}
-    var element = this;
-    var parent = this.parentNode;
-    //going up
-    if( (this.dragPosition + changeBuffer) < this.currentPosition){
-      //find old index
-      var oldIndex;
-      for(var i = 0; i < parent.children.length; i++){
-        if(parent.children[i].isEqualNode(element)){
-          oldIndex = i;        
-          }
-      }
-      //set new index
-      if(oldIndex!=0){
-        parent.insertBefore(element,parent.children[(oldIndex-1)]);
-        this.currentPosition = this.dragPosition;
-        return;
-      }
+      
+
+    //if slottted images increase change buffer size
+    if(this.querySelectorAll('img').length > 0){
+      changeBuffer = 70;
     }
-    //going down
-    if( (this.dragPosition - changeBuffer) > this.currentPosition){
-      //find old index
-      var oldIndex;
-      for(var i = 0; i < parent.children.length; i++){
-        if(parent.children[i].isEqualNode(element)){
-          oldIndex = i;
-          }
-      }
-      //set new index
-      if(oldIndex!=parent.children.length -1){
-        parent.insertBefore(parent.children[(oldIndex+1)],element);
-        this.currentPosition = this.dragPosition;
-        return;
-      }
+
+
+    // this.style.visibility = "hidden";
+     var mouseTracker = window.event;
+     var posY = mouseTracker.clientY;
+     //drag stop counts as drag for some reason so make sure not to set drag pos to zero
+     if(posY!=0){this.dragPosition = posY;}
+     var element = this;
+     var parent = this.parentNode;
+     //going up
+     if( (this.dragPosition + changeBuffer) < this.currentPosition){
+       //find old index
+       var oldIndex;
+       for(var i = 0; i < parent.children.length; i++){
+         if(parent.children[i].isEqualNode(element)){
+           oldIndex = i;        
+           }
+       }
+       //set new index
+       if(oldIndex!=0){
+         parent.insertBefore(element,parent.children[(oldIndex-1)]);
+         this.currentPosition = this.dragPosition;
+         return;
+       }
+     }
+     //going down
+     if( (this.dragPosition - changeBuffer) > this.currentPosition){
+       //find old index
+       var oldIndex;
+       for(var i = 0; i < parent.children.length; i++){
+         if(parent.children[i].isEqualNode(element)){
+           oldIndex = i;
+           }
+       }
+       //set new index
+       if(oldIndex!=parent.children.length -1){
+         parent.insertBefore(parent.children[(oldIndex+1)],element);
+         this.currentPosition = this.dragPosition;
+         return;
+       }
+     }
+
     }
+
+    
   }
 
    DragEnd(){
-    if(this.dark){
-      this.style.backgroundColor = "lightgray";
-    }else{
-      this.style.backgroundColor = "white";
-    }
+     if(!this.disabled){
+      if(this.dark){
+        this.style.backgroundColor = "lightgray";
+      }else{
+        this.style.backgroundColor = "white";
+      }
+      console.log("current pos");
+      console.log(this.currentPosition);
+     }
   }
 
 
@@ -101,31 +127,49 @@ export class SlimeSortingOption extends LitElement {
 
 
   upArrowSort(element){
-
-    var parent = element.parentNode;
-
-     //find old index
-     var oldIndex;
-     for(var i = 0; i < parent.children.length; i++){
-       if(parent.children[i].isEqualNode(element)){
-         oldIndex = i;        
-         }
-     }
-     //set new index
-     if(oldIndex!=0){
-       parent.insertBefore(element,parent.children[(oldIndex-1)]);
-       return;
-     }
-
-
+    if(!this.disabled){
+      var parent = element.parentNode;
+      parent.childNodes.forEach(function(child){
+        if(child.tagName==="SORTING-OPTION"){
+          child.style.backgroundColor = "--option-background-color";
+        }
+      });
+      if(this.dark){
+        this.style.backgroundColor = "#b7e8f591";
+      }else{
+        this.style.backgroundColor = "darkgray";
+      }
+       //find old index
+       var oldIndex;
+       for(var i = 0; i < parent.children.length; i++){
+         if(parent.children[i].isEqualNode(element)){
+           oldIndex = i;        
+           }
+       }
+       //set new index
+       if(oldIndex!=0){
+         parent.insertBefore(element,parent.children[(oldIndex-1)]);
+         return;
+       }
+    }
   }
 
 
 
   downArrowSort(element){
-
-    var parent = element.parentNode;
-
+    if(!this.disabled){
+      var parent = element.parentNode;
+    parent.childNodes.forEach(function (child){
+      if(child.tagName==="SORTING-OPTION"){
+        child.style.backgroundColor = "--option-background-color";
+      }
+    });
+    if(this.dark){
+      this.style.backgroundColor = "#b7e8f591";
+    }else{
+      this.style.backgroundColor = "darkgray";
+    }
+    
      //find old index
      var oldIndex;
      for(var i = 0; i < parent.children.length; i++){
@@ -138,7 +182,7 @@ export class SlimeSortingOption extends LitElement {
        parent.insertBefore(parent.children[(oldIndex+1)],element);
        return;
      }
-
+    }
   }
 
   
@@ -149,24 +193,22 @@ export class SlimeSortingOption extends LitElement {
     changedProperties.forEach((oldValue, propName) => {
       if (propName === 'dragPosition') { 
       }
+
+     
+      
     });
   }
-
-
 
 
   // Lit life-cycle; this fires the 1st time the element is rendered on the screen
   // this is a sign it is safe to make calls to this.shadowRoot
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
-      super.firstUpdated(changedProperties);
-      
+      super.firstUpdated(changedProperties);    
       if(this.parentElement.getAttribute("dark")!= (null || undefined) ){
         this.setAttribute("dark",true);
       }
-
       var el = this;
-
       this.shadowRoot.querySelector('#upArrow').addEventListener('click',function(){
             el.upArrowSort(el);  
       });
@@ -185,10 +227,9 @@ export class SlimeSortingOption extends LitElement {
         if(e.key==="Enter"){
           el.downArrowSort(el);  
           }
-        
       });
 
-
+      console.log(this.querySelectorAll('img').length);
     }
   }
 
@@ -219,7 +260,8 @@ export class SlimeSortingOption extends LitElement {
       width: 95%;
       margin-top: 5px;
       margin-bottom: 5px;
-      height: 25px;
+      height: 100%;
+      min-height: 25px;
       display: flex;
       align-items: center;
       box-shadow: 1px 1px 1px;
@@ -241,13 +283,15 @@ export class SlimeSortingOption extends LitElement {
 
     :host([correct]){
       transition: background-color 0.7s linear;
-      background-color: var(--option-background-color-correct,#3deb3d87) !important;
+      background-color: var(--option-background-color-correct,#3deb3dcc) !important;
     }
 
     :host([incorrect]){
       transition: background-color 0.7s linear;
-      background-color: var(--option-background-color-incorrect,#f94343ad) !important;
+      background-color: var(--option-background-color-incorrect,#f94343f7) !important;
     }
+
+    
 
   
     .option-slot-wrapper{
@@ -256,7 +300,7 @@ export class SlimeSortingOption extends LitElement {
       z-index: 2;
       width: 100%;
       height: 100%;
-      background-color: inherit;
+      background-color: transparent;
       border: none;
       text-align: inherit;
       font-weight: bold;
@@ -273,6 +317,16 @@ export class SlimeSortingOption extends LitElement {
       color: white;
     }
 
+
+    ::slotted(*){
+     
+     max-height: 75px;
+      
+    }
+
+   
+
+
     .arrow-container{
       display: flex;
       justify-content: flex-end;
@@ -281,7 +335,7 @@ export class SlimeSortingOption extends LitElement {
       right: 0px;
       width: 20%;
       height: 100%;
-      background-color: inherit;
+      background-color: transparent;
       align-items: center;
     }
 
@@ -295,7 +349,11 @@ export class SlimeSortingOption extends LitElement {
       margin-left: 1px;
       margin-right: 1px;
       border-radius: 5px;
-      box-shadow: 0px 1px 1px 0px;
+      box-shadow: 0px 0px 1px 0px;
+    }
+
+    :host([dark]) .arrow{
+      box-shadow: 0px 0px 1px 0px;
     }
     
     .up-arrow{
@@ -313,7 +371,7 @@ export class SlimeSortingOption extends LitElement {
       height: 100%;
       align-items: center;
       padding-left: 5px;
-      background-color: inherit;
+      background-color: transparent;
     }
 
     
@@ -341,20 +399,28 @@ export class SlimeSortingOption extends LitElement {
 
 
 
-  
 
   // HTML - specific to Lit
   render() {
+
+    
+
+    
+
     return html`
+
     <div class="feedback-container">
     <img id="correct-icon" src="./src/images/correctIcon.png" alt="correct answer" label="correct"></img>
     <img id="incorrect-icon" src="./src/images/incorrectIcon.png" alt="incorrect answer" label="incorrect"></img>
     </div>
+
     <button tabindex="-1" class="option-slot-wrapper"><slot></slot></button>
+
     <div class="arrow-container">
     <img tabindex="1" id="upArrow" class="arrow up-arrow" src="./src/images/arrow.png" alt="up arrow click me to move the option up"></img>
     <img tabindex="2" id="downArrow" class="arrow down-arrow" src="./src/images/arrow.png" alt="down arrow click me to move the option down"></img>
     </div>
+
     `;
   }
 

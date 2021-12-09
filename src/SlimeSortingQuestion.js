@@ -8,7 +8,7 @@ import { LitElement, html, css } from 'lit';
 export class SlimeSortingQuestion extends LitElement {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
-    return 'slime-sorting-question';
+    return 'sorting-question';
   }
 
   // HTMLElement life-cycle, built in; use this for setting defaults
@@ -32,7 +32,7 @@ export class SlimeSortingQuestion extends LitElement {
   getCorrectOrder(){
     let el = this;
     this.childNodes.forEach(function(child){
-      if(child.tagName=="SLIME-SORTING-OPTION"){
+      if(child.tagName=="SORTING-OPTION"){
         el.correctOrder.push(child);
       }
     });
@@ -135,16 +135,23 @@ export class SlimeSortingQuestion extends LitElement {
 
 
   reset(){
+    let el = this;
     //spin animation
     let resetButton = this.shadowRoot.querySelector(".reset-button").firstChild;
     resetButton.animate([{transform : "rotate(360deg)"}],{duration: 500});
     //reset appearance of all options
     this.childNodes.forEach(function(child){
-      if(child.tagName=="SLIME-SORTING-OPTION"){
+      if(child.tagName=="SORTING-OPTION"){
         child.shadowRoot.querySelector("#incorrect-icon").style.display = "none";
         child.shadowRoot.querySelector("#correct-icon").style.display = "none";
         child.removeAttribute("incorrect");
         child.removeAttribute("correct");
+        if(el.dark===false){
+          child.style.backgroundColor = "white";
+        }
+        else{
+          child.style.backgroundColor = "lightGray";
+        }
       }
     });
     this.numberCorrrect = 0;
@@ -163,7 +170,8 @@ export class SlimeSortingQuestion extends LitElement {
       numberCorrrect: {type: Number},
       celebrate: {type: Boolean},
       shame: {type: Boolean},
-      dark: {type: Boolean}
+      dark: {type: Boolean},
+      disabled: {type: Boolean}
     };
   }
 
@@ -174,7 +182,44 @@ export class SlimeSortingQuestion extends LitElement {
       if (propName === 'need' && this[propName] === 'joy') {
         this.classList.add('joyful');
       }
-      
+
+      if(this.disabled){
+        let el = this;
+        var resetButton = this.shadowRoot.querySelector('.reset-button');
+        var submitButton = this.shadowRoot.querySelector('.submit-button');
+        resetButton.setAttribute('disabled',true);
+        submitButton.setAttribute('disabled',true);
+        this.childNodes.forEach(function(child){
+          if(child.tagName=="SORTING-OPTION"){
+            child.setAttribute("disabled",true);
+            child.setAttribute("draggable",false);
+            child.removeAttribute("correct");
+            child.removeAttribute("incorrect");
+            child.shadowRoot.querySelector("#incorrect-icon").style.display = "none";
+            child.shadowRoot.querySelector("#correct-icon").style.display = "none";
+            if(el.dark===false){
+              child.style.backgroundColor = "white";
+            }
+            else{
+              child.style.backgroundColor = "lightGray";
+            }
+            child.style.opacity = "0.5";
+          }
+        });
+      }else{
+        var resetButton = this.shadowRoot.querySelector('.reset-button');
+        var submitButton = this.shadowRoot.querySelector('.submit-button');
+        resetButton.removeAttribute('disabled');
+        submitButton.removeAttribute('disabled');
+        this.childNodes.forEach(function(child){
+          if(child.tagName=="SORTING-OPTION"){
+            child.removeAttribute('disabled');
+            child.setAttribute("draggable",true);
+            child.style.opacity = "1";
+          }
+        });
+      }
+
     });
   }
 
@@ -183,7 +228,24 @@ export class SlimeSortingQuestion extends LitElement {
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
-     
+      
+      if(this.disabled){
+        var resetButton = this.shadowRoot.querySelector('.reset-button');
+        var submitButton = this.shadowRoot.querySelector('.submit-button');
+        resetButton.setAttribute('disabled',true);
+        submitButton.setAttribute('disabled',true);
+        this.childNodes.forEach(function(child){
+          if(child.tagName=="SORTING-OPTION"){
+            child.setAttribute("disabled",true);
+            child.setAttribute("draggable",false);
+            child.style.opacity = "0.5";
+          }
+        });
+      }
+
+
+
+
     }
   }
 
@@ -298,10 +360,24 @@ export class SlimeSortingQuestion extends LitElement {
         cursor: pointer;
       }
 
+      .reset-button:disabled {
+
+        opacity: 0.5;
+
+      
+
+      }
+
       .reset-button img{
         height: inherit;
         width: inherit;
         padding: 1px;
+      }
+
+
+
+      :host([dark][disabled]) .submit-button{
+          opacity: 0.5;
       }
 
     `;
@@ -321,7 +397,6 @@ export class SlimeSortingQuestion extends LitElement {
        html`<button  @click="${this.reset}" class="reset-button"><img src="./src/images/reset.png" alt="reset button, click to restart"></img></button>`}
       <button class="submit-button" @click="${this.checkOrder}">Submit</button>
       </div>
-
       </div>
     `;
   }
