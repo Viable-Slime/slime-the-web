@@ -1,4 +1,9 @@
 // dependencies / things imported
+
+//TO Do: -> HAX Wiring, Polish Code, Publish to NPM
+
+
+
 import { LitElement, html, css } from 'lit';
 
 
@@ -68,7 +73,7 @@ export class SlimeSortingOption extends LitElement {
      var mouseTracker = window.event;
      var posY = mouseTracker.clientY;
      //drag stop counts as drag for some reason so make sure not to set drag pos to zero
-     if(posY!=0){this.dragPosition = posY;}
+     if(posY!=0 && posY>0){this.dragPosition = posY;}
      var element = this;
      var parent = this.parentNode;
      //going up
@@ -129,9 +134,14 @@ export class SlimeSortingOption extends LitElement {
   upArrowSort(element){
     if(!this.disabled){
       var parent = element.parentNode;
-      parent.childNodes.forEach(function(child){
+      parent.childNodes.forEach((child)=>{
         if(child.tagName==="SORTING-OPTION"){
-          child.style.backgroundColor = "--option-background-color";
+          
+          if(this.dark){
+            child.style.backgroundColor = "#lightgray";
+          }else{
+            child.style.backgroundColor = "white";
+          }
         }
       });
       if(this.dark){
@@ -149,8 +159,12 @@ export class SlimeSortingOption extends LitElement {
        //set new index
        if(oldIndex!=0){
          parent.insertBefore(element,parent.children[(oldIndex-1)]);
+         this.shadowRoot.querySelector("#upArrow").focus();
          return;
        }
+       //keep focus on up-sort
+       
+      
     }
   }
 
@@ -159,11 +173,16 @@ export class SlimeSortingOption extends LitElement {
   downArrowSort(element){
     if(!this.disabled){
       var parent = element.parentNode;
-    parent.childNodes.forEach(function (child){
-      if(child.tagName==="SORTING-OPTION"){
-        child.style.backgroundColor = "--option-background-color";
-      }
-    });
+      parent.childNodes.forEach((child)=>{
+        if(child.tagName==="SORTING-OPTION"){
+          
+          if(this.dark){
+            child.style.backgroundColor = "#lightgray";
+          }else{
+            child.style.backgroundColor = "white";
+          }
+        }
+      });
     if(this.dark){
       this.style.backgroundColor = "#b7e8f591";
     }else{

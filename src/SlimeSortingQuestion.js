@@ -1,11 +1,12 @@
 // dependencies / things imported
 import { SlimeSortingOption } from './SlimeSortingOption';
 import { LitElement, html, css } from 'lit';
+import { I18NMixin } from "@lrnwebcomponents/i18n-manager/lib/I18NMixin.js";
 
 
 // EXPORT (so make available to other documents that reference this file) a class, that extends LitElement
 // which has the magic life-cycles and developer experience below added
-export class SlimeSortingQuestion extends LitElement {
+export class SlimeSortingQuestion extends  I18NMixin(LitElement) {
   // a convention I enjoy so you can change the tag name in 1 place
   static get tag() {
     return 'sorting-question';
@@ -16,11 +17,28 @@ export class SlimeSortingQuestion extends LitElement {
     super();
     this.celebrate = false;
     this.shame = false;
-    this.question = "Sort the following in order!";
     this.numberOfOptions = this.children.length;
     this.numberCorrrect = 0;
     this.correctOrder = [];
     this.dark = false;
+    this.mute = false;
+    this.noBackground = false;
+    
+
+    this.question = "Sort the following in order!";
+    this.t = {
+      question: this.question,
+      numCorrectLeft: "You Have",
+      numCorrectRight: "Correct.",
+      submit: "Submit"
+
+    }
+    this.registerLocalization({
+      context: this,
+      localesPath: new URL('../locales/', import.meta.url).href,
+      locales: ["he", "ja", "es"],
+    });
+
 
     //set order to be orginal order then scramble the options
     
@@ -93,41 +111,112 @@ export class SlimeSortingQuestion extends LitElement {
   celebration(score, maximumScore){
     if(score==maximumScore){
       //play audio & disable button until audio play is over
-      var audio = new Audio('src/mp3/Celebration1.mp3');
+      //if mute == false
+
+
+      var audio = new Audio('./src/mp3/Celebration1.mp3');
       var duration;
       var button = this.shadowRoot.querySelector(".submit-button");
-      //show confetti
-      var el = this;
-      el.style.backgroundImage = "url(src/gifs/confetti.gif)";
-      audio.play();
-      button.disabled = true;
-      audio.onloadeddata = function(){
-        duration = Number.parseInt(audio.duration);
-        setTimeout(()=>{
-        button.disabled = false;
-        el.style.backgroundImage = "none";
-        },(duration * 1000));
+
+
+      if(this.mute){
+
+        if(!this.noBackground){
+          this.style.backgroundImage = "url(./src/gifs/confetti.gif)";
+          setTimeout(()=>{
+  
+            this.style.backgroundImage = "none";
+          },3000);
+        }
+       
+
+        }else{
+        //play audio
+        if(this.noBackground){
+          var el = this;
+          //el.style.backgroundImage = "url(./src/gifs/confetti.gif)";
+          audio.play();
+          button.disabled = true;
+          audio.onloadeddata = function(){
+          duration = Number.parseInt(audio.duration);
+          setTimeout(()=>{
+          button.disabled = false;
+          //el.style.backgroundImage = "none";
+          },(duration * 1000));
+          }
+
+        }else{
+          var el = this;
+          el.style.backgroundImage = "url(./src/gifs/confetti.gif)";
+          audio.play();
+          button.disabled = true;
+          audio.onloadeddata = function(){
+          duration = Number.parseInt(audio.duration);
+          setTimeout(()=>{
+          button.disabled = false;
+          el.style.backgroundImage = "none";
+          },(duration * 1000));
+          }
+        }
+         
       }
     }  
     else{
       //else if shame = true play failure audio :)
       if(this.shame){
         //play audio & disable button until audio play is over
-       var audio = new Audio('src/mp3/wrong.mp3');
+        
+
+
+       var audio = new Audio('./src/mp3/wrong.mp3');
        var duration;
        var button = this.shadowRoot.querySelector(".submit-button");
-       //show confetti
-       var el = this;
-       el.style.backgroundImage = "url(src/gifs/fire.gif)";
+
+       if(this.mute){
+        if(!this.noBackground){
+          this.style.backgroundImage = "url(./src/gifs/tomatoSplat.gif)";
+        setTimeout(()=>{
+
+          this.style.backgroundImage = "none";
+        },3000);
+        }
+        
+      }else{
+
+        if(this.noBackground){
+          var el = this;
+      // el.style.backgroundImage = "url(./src/gifs/tomatoSplat.gif)";
+      
        audio.play();
        button.disabled = true;
        audio.onloadeddata = function(){
          duration = Number.parseInt(audio.duration);
          setTimeout(()=>{
          button.disabled = false;
-         el.style.backgroundImage = "none";
+        // el.style.backgroundImage = "none";
          },(duration * 1000));
        }
+        }else{
+
+          var el = this;
+          el.style.backgroundImage = "url(./src/gifs/tomatoSplat.gif)";
+          audio.play();
+          button.disabled = true;
+          audio.onloadeddata = function(){
+            duration = Number.parseInt(audio.duration);
+            setTimeout(()=>{
+            button.disabled = false;
+            el.style.backgroundImage = "none";
+            },(duration * 1000));
+          }
+        }
+       
+
+
+      }
+       //show confetti
+       
+
       }
     }
   }
@@ -164,6 +253,7 @@ export class SlimeSortingQuestion extends LitElement {
   // properties that you wish to use as data in HTML, CSS, and the updated life-cycle
   static get properties() {
     return {
+      ...super.properties,
       question: { type: String, reflect: true },
       correctOrder: {type: Array},
       numberOfOptions: {type: Number},
@@ -171,7 +261,9 @@ export class SlimeSortingQuestion extends LitElement {
       celebrate: {type: Boolean},
       shame: {type: Boolean},
       dark: {type: Boolean},
-      disabled: {type: Boolean}
+      mute:{type: Boolean},
+      disabled: {type: Boolean},
+      noBackground: {type: Boolean, attribute: "no-background"}
     };
   }
 
@@ -267,6 +359,8 @@ export class SlimeSortingQuestion extends LitElement {
 
       :host {
         background-color: var(--slime-sorting-question-background-color,white);
+        background-repeat: no-repeat;
+        background-position: center;
         border: 2px solid black;
         padding: 15px 10px;
         display: flex;
@@ -387,15 +481,16 @@ export class SlimeSortingQuestion extends LitElement {
 
   // HTML - specific to Lit
   render() {
+    //this.t.question = this.question;
     return html`
-      <div class="slime-sorting-question-header">${this.question}</div>
+      <div class="slime-sorting-question-header">${this.t.question}</div>
       <div class="options"><slot></slot></div>
       <div class="slime-sorting-controls">
-      <span>You have ${this.numberCorrrect}/${this.numberOfOptions} correct.</span>
+      <span>${this.t.numCorrectLeft} ${this.numberCorrrect}/${this.numberOfOptions} ${this.t.numCorrectRight}</span>
       <div class="button-container">
       ${this.dark ? html`<button @click="${this.reset}" class="reset-button"><img src="./src/images/resetDark.png" alt="reset button, click to restart"></img></button>`:
        html`<button  @click="${this.reset}" class="reset-button"><img src="./src/images/reset.png" alt="reset button, click to restart"></img></button>`}
-      <button class="submit-button" @click="${this.checkOrder}">Submit</button>
+      <button class="submit-button" @click="${this.checkOrder}"> ${this.t.submit} </button>
       </div>
       </div>
     `;
@@ -408,6 +503,12 @@ export class SlimeSortingQuestion extends LitElement {
    */
   static get haxProperties() {
     return new URL(`../lib/rename-me.haxProperties.json`, import.meta.url).href;
+
+
+
+
+
+
   }
 }
 

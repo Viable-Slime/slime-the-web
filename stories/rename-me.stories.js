@@ -1,22 +1,50 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-import '../rename-me.js';
+import '../src/SlimeSortingQuestion.js';
 
 export default {
-  title: 'Rename me',
-  component: 'rename-me',
+  title: 'sime-sorting-question',
+  component: 'sorting-question',
   argTypes: {
-    need: { control: 'text' },
+    question: { control: 'text', Reflect: true, description: "Question header"},
+    dark: {control: "boolean", Reflect: true, description: "Element Dark Theme"},
+    celebrate: {control: "boolean", Reflect: true,description: "Celebrate if 100% score"},
+    shame: {control: "boolean", Reflect: true, description:"shame if less than 100% score"},
+    mute: {control: "boolean", Reflect: true, description:"stops celebrate/shame audio from playing"},
+    noBackground: {control: "boolean", Reflect: true, description:"stops background image from appearing on celebrate or shame"},
   },
 };
 
-function Template({ need = 'rename', slot }) {
-  return html` <rename-me need="${need}"> ${slot} </rename-me> `;
-}
-export const Card = Template.bind({});
+function Template({ question = 'Sort The Following In Order', dark = false, celebrate = false, shame = false, mute = false, noBackground = false }) {
 
-export const ScienceCard = Template.bind({});
-ScienceCard.args = {
+  return html` <sorting-question 
+  question="${question}" 
+  dark=${ifDefined(dark ? html`` : undefined)} 
+  celebrate=${ifDefined(celebrate ? html`` : undefined)}'
+  shame=${ifDefined(shame ? html`` : undefined)}
+  mute=${ifDefined(mute ? html`` : undefined)}
+  no-background=${ifDefined(noBackground ? html`` : undefined)}
+  
+  >
+  
+  <sorting-option>1</sorting-option>
+  <sorting-option>2</sorting-option>
+  <sorting-option>3</sorting-option>
+
+  </sorting-question> `;
+
+}
+
+export const SortingQuestion = Template.bind({});
+
+/*
+
+
+export const sortingOption = Template.bind({});
+sortingOption.args = {
   need: 'science',
-  slot: html`<p>slotted content that should render</p>`,
+  slot: html`<sorting-option></sorting-option>`,
 };
+
+*/
