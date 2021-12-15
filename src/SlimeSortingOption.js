@@ -46,6 +46,7 @@ export class SlimeSortingOption extends LitElement {
       }
       this.removeAttribute("correct");
       this.removeAttribute("incorrect");
+
       var mouseTracker = window.event;
       var posY = mouseTracker.clientY;
       this.currentPosition = posY;
@@ -121,8 +122,6 @@ export class SlimeSortingOption extends LitElement {
       }else{
         this.style.backgroundColor = "white";
       }
-      console.log("current pos");
-      console.log(this.currentPosition);
      }
   }
 
@@ -247,8 +246,6 @@ export class SlimeSortingOption extends LitElement {
           el.downArrowSort(el);  
           }
       });
-
-      console.log(this.querySelectorAll('img').length);
     }
   }
 

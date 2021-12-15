@@ -24,14 +24,12 @@ export class SlimeSortingQuestion extends  I18NMixin(LitElement) {
     this.mute = false;
     this.noBackground = false;
     
-
     this.question = "Sort the following in order!";
     this.t = {
       question: this.question,
       numCorrectLeft: "You Have",
       numCorrectRight: "Correct.",
       submit: "Submit"
-
     }
     this.registerLocalization({
       context: this,
@@ -312,6 +310,13 @@ export class SlimeSortingQuestion extends  I18NMixin(LitElement) {
         });
       }
 
+      if(propName=="question"){
+        this.t.question = this.question;
+        this.render();
+      }
+
+      
+
     });
   }
 
@@ -335,7 +340,7 @@ export class SlimeSortingQuestion extends  I18NMixin(LitElement) {
         });
       }
 
-
+      
 
 
     }
@@ -359,7 +364,7 @@ export class SlimeSortingQuestion extends  I18NMixin(LitElement) {
 
       :host {
         background-color: var(--slime-sorting-question-background-color,white);
-        background-repeat: no-repeat;
+        
         background-position: center;
         border: 2px solid black;
         padding: 15px 10px;
@@ -481,7 +486,7 @@ export class SlimeSortingQuestion extends  I18NMixin(LitElement) {
 
   // HTML - specific to Lit
   render() {
-    //this.t.question = this.question;
+    this.t.question = this.question;
     return html`
       <div class="slime-sorting-question-header">${this.t.question}</div>
       <div class="options"><slot></slot></div>
@@ -502,13 +507,7 @@ export class SlimeSortingQuestion extends  I18NMixin(LitElement) {
    * haxProperties integration via file reference
    */
   static get haxProperties() {
-    return new URL(`../lib/rename-me.haxProperties.json`, import.meta.url).href;
-
-
-
-
-
-
+    return new URL(`../lib/slime-sorting-question.haxProperties.json`, import.meta.url).href;
   }
 }
 

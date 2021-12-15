@@ -1,12 +1,12 @@
 {
-  "name": "@lrnwebcomponents/rename-me",
+  "name": "@viable-slime/sorting-question",
   "description": "HAX Capable web component to build a better future",
   "license": "Apache-2.0",
-  "author": "btopro",
+  "author": "Viable Slime",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/elmsln/project-3.git"
+    "url": "https://github.com/Viable-Slime/slime-the-web"
   },
   "scripts": {
     "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",

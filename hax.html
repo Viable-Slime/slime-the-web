@@ -38,7 +38,7 @@
   <script src="../../../node_modules/@lrnwebcomponents/deduping-fix/deduping-fix.js"></script>
   <script src="../../../node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
   <script type="module">
-    import '../src/SlimeSortingQuestion.js';
+   // import '../src/SlimeSortingQuestion.js';
     import "@lrnwebcomponents/h-a-x/h-a-x.js";
     import("@polymer/polymer/lib/utils/settings.js").then((esModule) => {
       esModule.setPassiveTouchGestures(true);
@@ -52,6 +52,8 @@
     <li><a href="#" disabled>HAX, card demo</a></li>
   </ul>
   <div class="hax-wrapper">
+
+   
     <h-a-x app-store='{"url": "assets/appstore.json"}' element-align="right">
       <p data-hax-grid="" role="textbox">Stuff and thigns</p>
       <p data-hax-grid="" role="textbox">Another block of text below that</p>
@@ -65,7 +67,6 @@
       
         
         <retro-card title="hax" subtitle="The future of content authoring" tags="bright, amazing, innovative, new, fun, a requirement to complete this course" url="https://haxtheweb.org/" role="textbox" slot="col-3" accent-color="light-green"></retro-card>
-      
       
       </grid-plate>
       
@@ -97,13 +98,6 @@
       
       
       </grid-plate>
-      
-      
-      <sorting-question>
-
-        
-      </sorting-question>
-      
       
       <p data-hax-grid="">Cool stuff. Let's write about spongebob!</p>
       
